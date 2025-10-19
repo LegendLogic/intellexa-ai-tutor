@@ -21,6 +21,9 @@ st.set_page_config(
     layout="wide"
 )
 
+# -------------------------
+# Custom CSS for buttons and layout
+# -------------------------
 st.markdown("""
 <style>
 .main .block-container{padding-top:1rem;}
@@ -218,4 +221,3 @@ with tabs[3]:
             st.success("🧠 Technical Genius Badge!")
     else:
         st.info("No interviews yet. Try the AI Interview Coach tab first.")
-
