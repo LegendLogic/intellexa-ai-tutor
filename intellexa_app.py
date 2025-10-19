@@ -20,7 +20,8 @@ with st.sidebar:
     name = st.text_input("Enter your name", "")
     goal = st.selectbox(
         "Choose your Goal",
-        ["Data Analytics","Web Development","Machine Learning","Data Science","MERN Stack","Java Development","Android Development"]
+        ["Data Analytics","Web Development","Machine Learning","Data Science",
+         "MERN Stack","Java Development","Android Development"]
     )
     level = st.selectbox("Skill Level", ["Beginner", "Intermediate", "Advanced"])
     hours = st.slider("Study Time (hours/day)", 1, 6, 2)
@@ -57,7 +58,8 @@ if name:
     chosen_topic = st.selectbox("Select a Topic to Learn More", topic_list)
     action = st.radio(
         "Choose what you want the AI to do",
-        ["Explain Topic Clearly","Generate Practice Questions","Suggest Next Topic","Give Study Improvement Tips"]
+        ["Explain Topic Clearly","Generate Practice Questions",
+         "Suggest Next Topic","Give Study Improvement Tips"]
     )
 
     if st.button("Ask AI ✨"):
@@ -69,12 +71,19 @@ if name:
             }
             payload = {
                 "model": MODEL_ID,
-                "messages": [{"role":"user","content":prompt}]
+                "messages": [{"role": "user", "content": prompt}]
             }
-            r = requests.post("https://openrouter.ai/api/v1/chat/completions",
-                              headers=headers, data=json.dumps(payload))
-            if r.status_code == 200:
-                result = r.json()["choices"][0]["message"]["content"]
-                st.success(result)
-            else:
-                st.error("❌ OpenRouter API Error")
+            try:
+                r = requests.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers=headers,
+                    json=payload,
+                    timeout=30
+                )
+                if r.status_code == 200:
+                    result = r.json()["choices"][0]["message"]["content"]
+                    st.success(result)
+                else:
+                    st.error(f"❌ OpenRouter API Error: {r.status_code} — {r.text}")
+            except Exception as e:
+                st.error(f"❌ Request failed: {e}")
