@@ -1,4 +1,4 @@
-%%writefile intellexa_app.py
+
 import streamlit as st
 import os, requests, json
 from datetime import datetime, timedelta
